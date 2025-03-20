@@ -1,27 +1,32 @@
-import './App.css';
-import Home from './page/Home';
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/Navbar';
-import Blog from './page/Blog';
-import Pricing from './page/Pricing';
-import Sign from './page/Sign';
-
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Services from './pages/Services';
+import Complaints from './pages/compliance';
+import Contact from './pages/Contact';
+import './App.css';
 
 function App() {
   return (
-    <>
-    <Navbar />
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/pricing" element={<Pricing />} />
-        <Route path="/sign" element={<Sign />} />
-
-      </Routes> 
-    </BrowserRouter>
-    </>
+    <Router>
+      <div className="app">
+        <Navbar />
+        <main className="content">
+          <AnimatePresence mode="wait">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/complaints" element={<Complaints />} />
+              <Route path="/contact" element={<Contact />} />
+            </Routes>
+          </AnimatePresence>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 

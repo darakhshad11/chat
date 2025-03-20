@@ -1,145 +1,161 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 
-const pages = ['Products', 'Pricing', 'Blog', 'Sign In'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-function Navbar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location]);
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-            <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="#app-bar-with-responsive-menu"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
+    <nav className="bg-gradient-to-r from-teal-600 to-teal-800 shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex items-center">
+            <Link to="/" className="flex-shrink-0 flex items-center">
+              {/* <img 
+                className="h-10 w-auto" 
+                src={logo} 
+                alt="CareForce One"
+              /> */}
+              <span className="ml-2 text-lg font-semibold text-white">CareForce One</span>
+            </Link>
+          </div>
+          
+          {/* Desktop Menu */}
+          <div className="hidden md:flex md:items-center md:space-x-4">
+            <Link 
+              to="/" 
+              className={`px-3 py-2 text-sm font-medium ${location.pathname === '/' 
+                ? 'text-white border-b-2 border-white' 
+                : 'text-teal-100 hover:text-white'}`}
             >
-              LOGO
-            </Typography>
-          </Box>
+              Home
+            </Link>
+            <Link 
+              to="/services" 
+              className={`px-3 py-2 text-sm font-medium ${location.pathname === '/services' 
+                ? 'text-white border-b-2 border-white' 
+                : 'text-teal-100 hover:text-white'}`}
+            >
+              Services
+            </Link>
+            <Link 
+              to="/complaints" 
+              className={`px-3 py-2 text-sm font-medium ${location.pathname === '/complaints' 
+                ? 'text-white border-b-2 border-white' 
+                : 'text-teal-100 hover:text-white'}`}
+            >
+              Complaints
+            </Link>
+            <Link 
+              to="/contact" 
+              className={`px-3 py-2 text-sm font-medium ${location.pathname === '/contact' 
+                ? 'text-white border-b-2 border-white' 
+                : 'text-teal-100 hover:text-white'}`}
+            >
+              Contact
+            </Link>
+          </div>
 
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
-              >
-                <MenuIcon />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                }}
-              >
-                {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {pages.map((page) => (
-                <Button
-                  key={page}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+          {/* Mobile menu button */}
+          <div className="flex md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="inline-flex items-center justify-center p-2 rounded-md text-teal-100 hover:text-white hover:bg-teal-700 focus:outline-none"
+              aria-expanded="false"
+            >
+              <span className="sr-only">Open main menu</span>
+              {isOpen ? (
+                <svg
+                  className="block h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
                 >
-                  {page}
-                </Button>
-              ))}
-            </Box>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="block h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
 
-            <Box>
-              
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+      {/* Mobile menu */}
+      <div className={`${isOpen ? 'block' : 'hidden'} md:hidden bg-teal-700`}>
+        <div className="pt-2 pb-3 space-y-1">
+          <Link
+            to="/"
+            className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+              location.pathname === '/'
+                ? 'border-white bg-teal-600 text-white'
+                : 'border-transparent text-teal-100 hover:bg-teal-600 hover:border-teal-300 hover:text-white'
+            }`}
+          >
+            Home
+          </Link>
+          <Link
+            to="/services"
+            className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+              location.pathname === '/services'
+                ? 'border-white bg-teal-600 text-white'
+                : 'border-transparent text-teal-100 hover:bg-teal-600 hover:border-teal-300 hover:text-white'
+            }`}
+          >
+            Services
+          </Link>
+          <Link
+            to="/complaints"
+            className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+              location.pathname === '/complaints'
+                ? 'border-white bg-teal-600 text-white'
+                : 'border-transparent text-teal-100 hover:bg-teal-600 hover:border-teal-300 hover:text-white'
+            }`}
+          >
+            Complaints
+          </Link>
+          <Link
+            to="/contact"
+            className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+              location.pathname === '/contact'
+                ? 'border-white bg-teal-600 text-white'
+                : 'border-transparent text-teal-100 hover:bg-teal-600 hover:border-teal-300 hover:text-white'
+            }`}
+          >
+            Contact
+          </Link>
+        </div>
+      </div>
+    </nav>
   );
-}
+};
 
 export default Navbar;
